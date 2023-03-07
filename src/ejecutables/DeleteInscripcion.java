@@ -13,17 +13,19 @@ Scanner scan = new Scanner(System.in);
 		
 		AccesoBBDD bdd = new AccesoBBDD();
 		
+		String nombreActividad;
 		int codigoActividad;
+		int codigoUsuario;
 		
 		bdd.conectar();
 		
 		try {
 			System.out.println("Introduce el nombre de la actividad");
-			String nombreActividad = scan.nextLine();
+			nombreActividad = scan.nextLine();
 			
 			
 			System.out.println("Introduce el codigo de usuario");
-			int codigoUsuario = scan.nextInt();
+			codigoUsuario = scan.nextInt();
 			
 			codigoActividad= bdd.getNombreActividad(nombreActividad);
 			

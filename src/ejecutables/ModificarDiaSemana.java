@@ -17,10 +17,6 @@ public class ModificarDiaSemana {
 		bdd.conectar();
 		
 		
-		
-		
-		
-		
 		try {
 			System.out.println("Introduce un id de actividad");
 			int idActividad = scan.nextInt();

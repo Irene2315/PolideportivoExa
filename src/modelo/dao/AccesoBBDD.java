@@ -153,47 +153,24 @@ public class AccesoBBDD extends Conector{
 	}
 	
 	public void modificarActividad (int id, String dias) {
-		try {
-			prt = conexion.prepareStatement("UPDATE actividades SET id=?,nombre=?,fecha_inicio=?,dias_semana=?,horas=?,max_participantes=?,precio=? WHERE id=?");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		
 		try {
-			resultado = prt.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+			prt = conexion.prepareStatement("UPDATE actividades SET dias_semana=? WHERE id=?");
+			
 			Actividad actividad = new Actividad();
+			
+			prt.setInt(2, id);
+			
+			prt.setString(1,actividad.getDiasSemana());
+			
+			
+	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-			
-			try {
-				prt.setInt(1,actividad.getId());
-				prt.setString(2,actividad.getNombre());
-				prt.setDate(3, actividad.getFechaInicio());
-				prt.setString(4, dias);
-				prt.setInt(5, actividad.getHoras());
-				prt.setInt(6, actividad.getMax_participantes());
-				prt.setDouble(7, actividad.getPrecio());
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
-			
-			try {
-				prt.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 			
 		
@@ -202,14 +179,13 @@ public class AccesoBBDD extends Conector{
 		int id = 0 ;
 			try {
 				prt = conexion.prepareStatement("SELECT id FROM `actividades` WHERE nombre=?");
-				prt.setString(2, nombreActividad);
+				prt.setString(1, nombreActividad);
 				resultado = prt.executeQuery();
 				
 				
 				while (resultado.next()) {
-					Actividad actividad = new Actividad();
 					
-					id=actividad.getId();
+					id= resultado.getInt("id");
 				}
 				
 				
@@ -230,9 +206,10 @@ public class AccesoBBDD extends Conector{
 	
 	public void  darBajaUsuario(int idActividad, int codigoUsuario) {
 		try {
-			prt = conexion.prepareStatement("DELETE FROM `inscripciones` WHERE id_actividad=?  AND id_usuario=?  ");
-			prt.setInt(1, codigoUsuario);
-			prt.setInt(2,idActividad);
+			prt = conexion.prepareStatement("DELETE FROM inscripciones WHERE id_actividad=? AND id_usuario=?");
+			
+			prt.setInt(1,idActividad);
+			prt.setInt(2, codigoUsuario);
 			
 			prt.execute();
 		} catch (SQLException e) {
