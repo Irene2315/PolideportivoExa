@@ -17,14 +17,14 @@ import modelo.bean.Usuario;
  */
 public class AccesoBBDD extends Conector {
 
-	PreparedStatement prt;
-	ResultSet resultado;
+
 
 	/* Insertar usuario */
 	public void insertarUsuario(Usuario usuario) {
+		
 
 		try {
-			prt = conexion.prepareStatement("INSERT INTO usuarios(nombre_apellido, dni,codigo) VALUES (?,?,?)");
+			PreparedStatement prt = conexion.prepareStatement("INSERT INTO usuarios(nombre_apellido, dni,codigo) VALUES (?,?,?)");
 
 			prt.setString(1, usuario.getNombreApellido());
 			prt.setString(2, usuario.getDni());
@@ -42,15 +42,10 @@ public class AccesoBBDD extends Conector {
 
 		Boolean encontrado = false;
 		try {
-			prt = conexion.prepareStatement("SELECT `codigo` FROM `usuarios` WHERE codigo=?");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
+			PreparedStatement prt = conexion.prepareStatement("SELECT `codigo` FROM `usuarios` WHERE codigo=?");
+			
 			prt.setString(1, codigo);
-			resultado = prt.executeQuery();
+			ResultSet resultado = prt.executeQuery();
 
 			if (resultado.next()) {
 				encontrado = true;
@@ -58,12 +53,14 @@ public class AccesoBBDD extends Conector {
 				encontrado = false;
 			}
 
-			return encontrado;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return encontrado;
 		}
+
+		return encontrado;
+		
 
 	}
 
@@ -74,18 +71,19 @@ public class AccesoBBDD extends Conector {
 		ArrayList<Usuario> usuariosInscritos = new ArrayList<>();
 
 		try {
-			prt = conexion.prepareStatement("SELECT id_usuario FROM inscripciones WHERE id_actividad=?");
+			PreparedStatement prt = conexion.prepareStatement("SELECT id_usuario FROM inscripciones WHERE id_actividad=?");
 
 			prt.setInt(1, id_actividad);
 
-			resultado = prt.executeQuery();
+			ResultSet resultado = prt.executeQuery();
 			while (resultado.next()) {
-
+				
 				Usuario usuarioI = new Usuario();
 				usuarioI = this.getUsuario(resultado.getInt("id_usuario"));
 
 				usuariosInscritos.add(usuarioI);
 
+			
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -100,11 +98,10 @@ public class AccesoBBDD extends Conector {
 
 		Usuario usuario = new Usuario();
 		try {
-			prt = conexion
-					.prepareStatement("SELECT `id`, `nombre_apellido`, `dni`, `codigo` FROM `usuarios` WHERE id=?");
+			PreparedStatement prt = conexion.prepareStatement("SELECT `id`, `nombre_apellido`, `dni`, `codigo` FROM `usuarios` WHERE id=?");
 
 			prt.setInt(1, id_usuario);
-			resultado = prt.executeQuery();
+			ResultSet resultado = prt.executeQuery();
 
 			if (resultado.next()) {
 
@@ -126,7 +123,7 @@ public class AccesoBBDD extends Conector {
 	public void modificarActividad(int id, String dias) {
 
 		try {
-			prt = conexion.prepareStatement("UPDATE actividades SET dias_semana=? WHERE id=?");
+			PreparedStatement prt = conexion.prepareStatement("UPDATE actividades SET dias_semana=? WHERE id=?");
 
 			prt.setInt(2, id);
 
@@ -144,9 +141,9 @@ public class AccesoBBDD extends Conector {
 	public int getNombreActividad(String nombreActividad) {
 		int id = 0;
 		try {
-			prt = conexion.prepareStatement("SELECT id FROM `actividades` WHERE nombre=?");
+			PreparedStatement prt = conexion.prepareStatement("SELECT id FROM `actividades` WHERE nombre=?");
 			prt.setString(1, nombreActividad);
-			resultado = prt.executeQuery();
+			ResultSet resultado = prt.executeQuery();
 
 			while (resultado.next()) {
 
@@ -163,7 +160,7 @@ public class AccesoBBDD extends Conector {
 
 	public void darBajaUsuario(int idActividad, int codigoUsuario) {
 		try {
-			prt = conexion.prepareStatement("DELETE FROM inscripciones WHERE id_actividad=? AND id_usuario=?");
+			PreparedStatement prt = conexion.prepareStatement("DELETE FROM inscripciones WHERE id_actividad=? AND id_usuario=?");
 
 			prt.setInt(1, idActividad);
 			prt.setInt(2, codigoUsuario);
