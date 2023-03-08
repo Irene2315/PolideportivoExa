@@ -11,6 +11,7 @@ public class DeleteInscripcion {
 
 Scanner scan = new Scanner(System.in);
 		
+		//elimina la inscripcion a una actividad concreta introduciendo el nombre de actividad y introduciendo el codigo de usuario
 		AccesoBBDD bdd = new AccesoBBDD();
 		
 		String nombreActividad;
